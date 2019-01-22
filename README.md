@@ -32,7 +32,7 @@ how to generate a container of nginx for Reverse Proxy. For  H3C VDI CloudClass.
     /root/logs/ppt
     /root/logs/tv
     
-    docker run -it --restart=always --name=nginxWiki -v /dockerNginx/conf/wiki:/etc/nginx/conf.d -v /root/logs/wiki:/var/log/nginx -d nginx  
+    docker run -it --restart=always --name=nginxWiki -p 80:80 -v /dockerNginx/conf:/etc/nginx/conf.d -v /root/nginxLogs:/var/log/nginx -d nginx  
 
 
 
