@@ -11,7 +11,7 @@ H3C VDI CloudClass  外网网站问题定位
     adda5b6e256a        nginx          "nginx -g 'daemon of…"   40 minutes ago      Exited (255) 1h ago      80/tcp    nginxPpt 
 ## 1.3 结论：由于主机状态不稳定导致容器停止，且没有自动重启。
 ## 1.4 解决方法：由nginx镜像运行一个容器的时候添加 --restart=always 并且把Nginx日志挂载到宿主机
-# 2.1生成一个Nginx容器的正确操作
+# 2.1 生成一个Nginx容器的正确操作
     把Nginx日志挂载到宿主机 
     宿主机反向代理配置文件 /dockerNginxConf/conf
     宿主机日志挂载点/root/nginxLogs
