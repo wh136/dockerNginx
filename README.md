@@ -2,10 +2,7 @@
 H3C VDI CloudClass  外网网站问题定位
 
 ## 1. 问题描述：位于紫光云主机的Nginx容器间隔大约2~5天的时间会自动挂掉，且无nginx日志可以查看.
-## 复现STATUS 出现Exited (255) 1h ago 
-    由nginx镜像运行一个容器的时候没有加 --restart=always 由于主机状态不稳定导致容器停止，并且没有日志提示
-    CONTAINER ID        IMAGE          COMMAND                  CREATED             STATUS                   PORTS     NAMES
-    adda5b6e256a        nginx          "nginx -g 'daemon of…"   40 minutes ago      Exited (255) 1h ago      80/tcp    nginxPpt  
+## 问题复现
 ## 1.1 首先在主机上生成一个nginx容器
     docker run -it --name=nginxWiki -v /dockerNginx/conf.d:/etc/nginx/conf.d -d nginx
 ## 1.2 然后重启主机,可以看到Exited (255) 错误码255出现
@@ -13,7 +10,7 @@ H3C VDI CloudClass  外网网站问题定位
     CONTAINER ID        IMAGE          COMMAND                  CREATED             STATUS                   PORTS     NAMES
     adda5b6e256a        nginx          "nginx -g 'daemon of…"   40 minutes ago      Exited (255) 1h ago      80/tcp    nginxPpt 
 ## 1.3 结论：由于主机状态不稳定导致容器停止，且没有自动重启。
-## 1.4 解决方法：由nginx镜像运行一个容器的时候添加 --restart=always
+## 1.4 解决方法：由nginx镜像运行一个容器的时候添加 --restart=always 并且把Nginx日志挂载到宿主机
 # 2.1生成一个Nginx容器的正确操作
     把Nginx日志挂载到宿主机 
     宿主机反向代理配置文件 /dockerNginxConf/conf
