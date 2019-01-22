@@ -24,15 +24,11 @@ how to generate a container of nginx for Reverse Proxy. For  H3C VDI CloudClass.
 
 # 生成一个Nginx容器的正确操作
     把容器日志和Nginx日志挂载到宿主机 
-    /dockerNginxConf/conf/wiki
-    /dockerNginxConf/conf/ppt
-    /dockerNginxConf/conf/tv
+    /dockerNginxConf/conf
     
-    /root/logs/wiki
-    /root/logs/ppt
-    /root/logs/tv
+    /root/nginxLogs
     
-    docker run -it --restart=always --name=nginxWiki -p 80:80 -v /dockerNginx/conf:/etc/nginx/conf.d -v /root/nginxLogs:/var/log/nginx -d nginx  
+    docker run -it --restart=always --name=nginx -p 80:80 -v /dockerNginx/conf:/etc/nginx/conf.d -v /root/nginxLogs:/var/log/nginx -d nginx  
 
 
 
