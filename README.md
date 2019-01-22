@@ -1,17 +1,6 @@
 # dockerNginx
-how to generate a container of nginx for Reverse Proxy. For  H3C VDI CloudClass.
+H3C VDI CloudClass Docker 问题定位
 
-# git CMD for project
-    …or create a new repository on the command line
-    echo "# dockerNginx" >> README.md
-    git init
-    git add README.md
-    git commit -m "first commit"
-    git remote add origin https://github.com/wh136/dockerNginx.git
-    git push -u origin master
-    …or push an existing repository from the command line
-    git remote add origin https://github.com/wh136/dockerNginx.git
-    git push -u origin master
 # STATUS 出现Exited (255) 1h ago复现
     由nginx镜像运行一个容器的时候没有加 --restart=always 由于主机状态不稳定导致容器停止，并且没有日志提示
     CONTAINER ID        IMAGE          COMMAND                  CREATED             STATUS                   PORTS     NAMES
