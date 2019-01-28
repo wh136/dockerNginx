@@ -22,4 +22,9 @@ H3C VDI CloudClass  外网网站问题定位
     e6badc25c692        nginx               "nginx -g 'daemon of…"   3 seconds ago       Up 2 seconds        0.0.0.0:80->80/tcp   nginxReverseProxy
 
 
+## 3. 修改主机登陆端口和密码的方法
 
+## 4. docker Minio设置方法
+    
+    
+    
