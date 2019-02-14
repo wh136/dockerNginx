@@ -69,5 +69,11 @@ H3C VDI CloudClass  外网网站问题定位
     –with-debug 
     将nginx需要打印debug调试级别日志的代码编译进nginx，这样才可以通过修改配置文件将调试日志打印出来，便于定位服务问题 
 
-
+    https://stackoverflow.com/questions/40574866/docker-nginx-ngx-http-image-filter-module
+    
+    
+    
+    
+    
+    
     
