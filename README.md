@@ -71,6 +71,43 @@ H3C VDI CloudClass  外网网站问题定位
 
     https://stackoverflow.com/questions/40574866/docker-nginx-ngx-http-image-filter-module
     
+## 定制 Docker镜像
+    参考资料 
+    https://zhang.ge/5126.html
+    开始操作
+    $ docker pull nginx
+    $ docker run -it --name="vdi-onlineshare" -d nginx  /bin/bash
+    docker run --help 查看详细参数信息
+    -it :　进行交互式终端操作  -i	--interactive  -t, --tty=false    Allocate a pseudo-TTY
+    在Unix术语, 终端(terminal)=tty=文本的输入输出环境, 控制台(console)=物理终端, shell=命令行解释器
+    -d :　--daemon 守护进程模式，等同于 -d=true,容器将会在后台运行，不然执行一次命令后，退出后，便是exit状态了。
+    --name : 容器启动后的名字，默认不指定，将会随机产生一个名字。或者使用 -name="containers_name" 
+    $ docker exec -ti vdi-onlineshare /bin/bash
+    root@4a0e60861950:/# apt-get update
+    root@4a0e60861950:/# apt-get install vim
+    root@4a0e60861950:/# exit
+    $ docker commit vdi-onlineshare vdi-nginx:v1.0
+    关于vdi-nginx 1.0
+        apt-get update
+        apt-get vim
+        修改/etc/nginx/nginx.conf 增加 load_module /etc/nginx/modules/ngx_http_image_filter_module.so;
+        
+    $ docker login
+    $ docker images
+    REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+    vdi-nginx           v1.0                382ae0f24237        2 hours ago         156MB
+    nginx               latest              f09fe80eb0e7        11 days ago         109MB
+    $ docker tag 382ae0f24237 wh136/vdi-nginx:v1.0
+    root@ppt:~# docker images
+    REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+    vdi-nginx           v1.0                382ae0f24237        2 hours ago         156MB
+    wh136/vdi-nginx     v1.0                382ae0f24237        2 hours ago         156MB
+    nginx               latest              f09fe80eb0e7        12 days ago         109MB
+
+    docker push 注册用户名/镜像名
+    $ docker push wh136/vdi-nginx:v1.0
+    
+    
     
     
     
