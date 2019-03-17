@@ -107,8 +107,78 @@ H3C VDI CloudClass  外网网站问题定位
     docker push 注册用户名/镜像名
     $ docker push wh136/vdi-nginx:v1.0
     
+### 云学堂全国大屏遭受redis攻击报错定位
+    redis被攻击之后无法登录大屏
+    docker logs -f xxx 查看docker 日志
+    1:M 17 Mar 01:58:55.036 * Background saving started by pid 5210
+    5210:C 17 Mar 01:58:55.036 # Failed opening the RDB file root (in server root dir /etc/crontabs) for saving: Permission denied
+    1:M 17 Mar 01:58:55.136 # Background saving error
+    CONFIG GET 命令用于取得运行中的 Redis 服务器的配置参数(configuration parameters)
+    redis> CONFIG GET *
+    1) "dir"
+    2) "/var/lib/redis"
+    3) "dbfilename"
+    4) "dump.rdb"
+    5) "requirepass"
+    6) (nil)
+    7) "masterauth"
+    8) (nil)
+    9) "maxmemory"
+    10) "0"
+    11) "maxmemory-policy"
+    12) "volatile-lru"
+    13) "maxmemory-samples"
+    14) "3"
+    15) "timeout"
+    16) "0"
+    17) "appendonly"
+    18) "no"
+    # ...
+    49) "loglevel"
+    50) "verbose"
+    执行
+    redis-cli config get dir
+    发现被攻击之后的redis为
+    /etc/crontabs # redis-cli config get dir
+    1) "dir"
+    2) "/etc/crontabs"
+    删除改该容器，重新生成redis容器，
+    再次执行
+    redis-cli config get dir
+    /data # redis-cli config get dir
+    1) "dir"
+    2) "/data"
+    通过查找redis攻击发现了该文章中攻击redis的原理
+    新的攻击通过在内存中设置一个恶意的键值对并将其作为文件保存在强制服务器执行文件的/etc/crontabs文件夹中
+    https://www.cnblogs.com/hacker520/p/9140222.html
     
+    vi /etc/crontabs/root
+    # do daily/weekly/monthly maintenance
+    # min   hour    day     month   weekday command
+    */15    *       *       *       *       run-parts /etc/periodic/15min
+    0       *       *       *       *       run-parts /etc/periodic/hourly
+    0       2       *       *       *       run-parts /etc/periodic/daily
+    0       3       *       *       6       run-parts /etc/periodic/weekly
+    0       5       1       *       *       run-parts /etc/periodic/monthly
+    （疑问，为什么防火墙已经开启了，但是依然能链接到redis ???）
+    root@yxt-web:~# redis-cli -h 111.166.23.99 -p 6379
+    111.166.23.99:6379> 
     
+    附：用RDB方式攻击redis的方法 （需要翻墙才能看到该文章）：
+    RDB方式备份数据库的文件名默认为dump.rdb，此文件名可以通过客户端交互动态设置dbfilename来更改，造成可以写任意文件.
+    https://www.00theway.org/2017/03/27/redis_exp/
+    执行命令反弹shell(写计划任务时会覆盖原来存在的用户计划任务).写文件之前先获取dir和dbfilename的值，以便恢复redis配置，将改动降到最低，避免被发现。
+    
+    http://www.zuidaima.com/share/2643146230549504.htm
+    //只允许127.0.0.1访问6379
+    iptables -A INPUT -s 127.0.0.1 -p tcp --dport 6379 -j ACCEPT
+    //其他ip访问全部拒绝
+    iptables -A INPUT -p TCP --dport 6379 -j REJECT
+    
+    生活最主要的还是感受，坚持是一种刻意的练习，不断寻找缺点突破缺点的过程，而不是重复做某件事情。
+    
+
+
     
     
     
