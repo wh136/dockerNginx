@@ -106,6 +106,13 @@ H3C VDI CloudClass  外网网站问题定位
 
     docker push 注册用户名/镜像名
     $ docker push wh136/vdi-nginx:v1.0
+### 基于ubuntu定制 golang revel的镜像
+    docker pull ubuntu 16.04
+    vim Dockerfile 参考ppt项目的Dockerfile
+    docker build -t="revel:v1" .
+    -t  revel:v1  给新构建的镜像取名为revel， 并设定版本为 v1.0 。
+    
+    
     
 ### 云学堂全国大屏遭受redis攻击报错定位
     redis被攻击之后无法登录大屏
